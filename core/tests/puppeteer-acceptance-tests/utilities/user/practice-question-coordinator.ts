@@ -37,13 +37,19 @@ export class QuestionCoordinator extends BaseUser {
   }
 
   /**
-   * Resets the page scroll position so that screenshots of the fixed-position
-   * question role editor modal match the baseline snapshots. Mobile emulation
-   * can retain a scroll offset left over from the keyboard autoscroll triggered
-   * while typing a username, which shifts the underlying page below the modal.
+   * Resets the page scroll position and blurs any focused element so that
+   * screenshots of the fixed-position question role editor modal match the
+   * baseline snapshots. Mobile emulation can retain a visual-viewport inset
+   * left over from the keyboard autoscroll triggered while typing a username,
+   * which shifts the underlying page below the modal.
    */
   async resetPageScrollPosition(): Promise<void> {
-    await this.page.evaluate(() => window.scrollTo(0, 0));
+    await this.page.evaluate(() => {
+      window.scrollTo(0, 0);
+      if (document.activeElement && 'blur' in document.activeElement) {
+        (document.activeElement as HTMLElement).blur();
+      }
+    });
     await this.page.waitForTimeout(200);
   }
 
