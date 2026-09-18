@@ -117,6 +117,7 @@ describe('Practice Question Coordinator', function () {
       questionSubmitter.username ?? ''
     );
     await questionCoordinator.expectQuestionRoleEditorModalToBeVisible();
+    await questionCoordinator.resetPageScrollPosition();
     await questionCoordinator.expectScreenshotToMatch(
       'addQuestionRightsModal',
       __dirname
@@ -161,6 +162,7 @@ describe('Practice Question Coordinator', function () {
       questionSubmitter.username ?? ''
     );
     await questionCoordinator.expectQuestionRoleEditorModalToBeVisible();
+    await questionCoordinator.resetPageScrollPosition();
     await questionCoordinator.expectScreenshotToMatch(
       'editQuestionRightsModalWithSubmitterChecked',
       __dirname
@@ -180,6 +182,7 @@ describe('Practice Question Coordinator', function () {
       questionReviewer.username ?? ''
     );
     await questionCoordinator.expectQuestionRoleEditorModalToBeVisible();
+    await questionCoordinator.resetPageScrollPosition();
     await questionCoordinator.expectScreenshotToMatch(
       'editQuestionRightsModalWithReviewerChecked',
       __dirname

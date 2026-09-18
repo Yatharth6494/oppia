@@ -37,6 +37,17 @@ export class QuestionCoordinator extends BaseUser {
   }
 
   /**
+   * Resets the page scroll position so that screenshots of the fixed-position
+   * question role editor modal match the baseline snapshots. Mobile emulation
+   * can retain a scroll offset left over from the keyboard autoscroll triggered
+   * while typing a username, which shifts the underlying page below the modal.
+   */
+  async resetPageScrollPosition(): Promise<void> {
+    await this.page.evaluate(() => window.scrollTo(0, 0));
+    await this.page.waitForTimeout(200);
+  }
+
+  /**
    * Clicks on the add reviewer or submitter button.
    * @param {'Submitter' | 'Reviewer'} right - The right to add.
    * @param {'add' | 'remove'} action - The action to perform.
