@@ -41,7 +41,9 @@ export class QuestionCoordinator extends BaseUser {
    * screenshots of the fixed-position question role editor modal match the
    * baseline snapshots. Mobile emulation can retain a visual-viewport inset
    * left over from the keyboard autoscroll triggered while typing a username,
-   * which shifts the underlying page below the modal.
+   * which shifts the underlying page below the modal. On mobile, the page
+   * behind the modal is also hidden behind an opaque backdrop so that any such
+   * residual shift cannot affect the captured screenshot.
    */
   async resetPageScrollPosition(): Promise<void> {
     await this.page.evaluate(() => {
@@ -50,6 +52,16 @@ export class QuestionCoordinator extends BaseUser {
         (document.activeElement as HTMLElement).blur();
       }
     });
+    if (this.isViewportAtMobileWidth()) {
+      await this.page.addStyleTag({
+        content: `
+          .modal-backdrop {
+            background-color: rgb(0, 0, 0) !important;
+            opacity: 1 !important;
+          }
+        `,
+      });
+    }
     await this.page.waitForTimeout(200);
   }
 
