@@ -93,6 +93,10 @@ export class BaseUser {
     const args: string[] = [
       '--window-size=1920,1080',
       '--use-fake-ui-for-media-stream',
+      // Prevent Chromium crashes on CI runners, which have limited shared
+      // memory, by having Chromium use /tmp for shared memory instead.
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
     ];
 
     const headless = process.env.HEADLESS === 'true';
